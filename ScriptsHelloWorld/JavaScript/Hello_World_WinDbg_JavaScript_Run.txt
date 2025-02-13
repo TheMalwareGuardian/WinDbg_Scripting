@@ -1,0 +1,4 @@
+kd> .scriptload C:\Malware\Hello_World_WinDbg_JavaScript.js
+kd> dx Debugger.State.Scripts.Hello_World_WinDbg_JavaScript.Contents.sayHi()
+kd> .scriptrun C:\Malware\Hello_World_WinDbg_JavaScript.js
+kd> .scriptunload C:\Malware\Hello_World_WinDbg_JavaScript.js

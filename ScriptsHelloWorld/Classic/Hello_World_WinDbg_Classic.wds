@@ -1,0 +1,4 @@
+.block
+{
+	.printf "Hello World!\n"
+}

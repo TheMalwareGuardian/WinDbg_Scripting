@@ -1,0 +1,2 @@
+kd> $$ Hello World script; .block { .printf "Hello World!\n" }
+kd> $$><C:\Malware\Hello_World_WinDbg_Classic.wds

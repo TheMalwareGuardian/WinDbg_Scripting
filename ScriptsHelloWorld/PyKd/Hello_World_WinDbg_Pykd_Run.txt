@@ -1,0 +1,7 @@
+kd> .load C:\Malware\pykd.dll
+kd> !pip install C:\Malware\pykd-0.3.4.15-cp39-none-win_amd64.whl
+kd> !py
+>>> import pykd
+>>> print(pykd.dbgCommand("version"))
+>>> exit()
+kd> !py C:\Malware\Hello_World_WinDbg_Pykd.py
