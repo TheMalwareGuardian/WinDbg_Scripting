@@ -1,0 +1,73 @@
+$$=====================================================================
+$$  ModifyTokenPrivileges.wds
+$$
+$$  Enables ALL privileges in the token of a process (Present, Enabled and EnabledByDefault), given its EPROCESS address.
+$$
+$$  How to get the EPROCESS address:
+$$      powershell -> $pid -> "{0:X}" -f $pid
+$$      !process <CidHex> 0
+$$      -> look for the line "PROCESS <address>"
+$$
+$$  Usage:
+$$      $$>a<C:\Malware\ModifyTokenPrivileges.wds EPROCESS_ADDR_HEX
+$$      $$>a<C:\Malware\ModifyTokenPrivileges.wds ffffd583dc872080
+$$=====================================================================
+
+r $t0 = $arg1
+
+$$ --- Section 1: identify the target process ---------------------------
+.printf "=========================================================\n"
+.printf " TARGET PROCESS\n"
+.printf "=========================================================\n"
+.printf "[+] EPROCESS      : %p\n", $t0
+.printf "[+] PID           : %d (0x%x)\n", poi($t0 + @@(#FIELD_OFFSET(nt!_EPROCESS, UniqueProcessId))), poi($t0 + @@(#FIELD_OFFSET(nt!_EPROCESS, UniqueProcessId)))
+.printf "[+] Image name    : %ma\n", $t0 + @@(#FIELD_OFFSET(nt!_EPROCESS, ImageFileName))
+
+$$ --- Section 2: locate the TOKEN ---------------------------------------
+$$ EPROCESS.Token is an EX_FAST_REF: low 4 bits = RefCnt, must be masked.
+r $t1 = poi($t0 + @@(#FIELD_OFFSET(nt!_EPROCESS, Token)))
+r $t1 = $t1 & 0xfffffffffffffff0
+
+.printf "\n=========================================================\n"
+.printf " TOKEN\n"
+.printf "=========================================================\n"
+.printf "[+] TOKEN address : %p\n", $t1
+
+$$ --- Section 3: read current privilege state (BEFORE) ------------------
+r $t2 = poi($t1 + @@(#FIELD_OFFSET(nt!_TOKEN, Privileges)) + @@(#FIELD_OFFSET(nt!_SEP_TOKEN_PRIVILEGES, Present)))
+r $t3 = poi($t1 + @@(#FIELD_OFFSET(nt!_TOKEN, Privileges)) + @@(#FIELD_OFFSET(nt!_SEP_TOKEN_PRIVILEGES, Enabled)))
+r $t4 = poi($t1 + @@(#FIELD_OFFSET(nt!_TOKEN, Privileges)) + @@(#FIELD_OFFSET(nt!_SEP_TOKEN_PRIVILEGES, EnabledByDefault)))
+
+.printf "\n--- BEFORE -----------------------------------------------\n"
+.printf "    Present          : %p\n", $t2
+.printf "    Enabled          : %p\n", $t3
+.printf "    EnabledByDefault : %p\n", $t4
+
+$$ --- Section 4: patch Enabled / EnabledByDefault = Present --------------
+eq $t1 + @@(#FIELD_OFFSET(nt!_TOKEN, Privileges)) + @@(#FIELD_OFFSET(nt!_SEP_TOKEN_PRIVILEGES, Enabled)) $t2
+eq $t1 + @@(#FIELD_OFFSET(nt!_TOKEN, Privileges)) + @@(#FIELD_OFFSET(nt!_SEP_TOKEN_PRIVILEGES, EnabledByDefault)) $t2
+
+$$ --- Section 5: read back the new state (AFTER) ------------------------
+r $t5 = poi($t1 + @@(#FIELD_OFFSET(nt!_TOKEN, Privileges)) + @@(#FIELD_OFFSET(nt!_SEP_TOKEN_PRIVILEGES, Enabled)))
+r $t6 = poi($t1 + @@(#FIELD_OFFSET(nt!_TOKEN, Privileges)) + @@(#FIELD_OFFSET(nt!_SEP_TOKEN_PRIVILEGES, EnabledByDefault)))
+
+.printf "\n--- AFTER ------------------------------------------------\n"
+.printf "    Present          : %p\n", $t2
+.printf "    Enabled          : %p\n", $t5
+.printf "    EnabledByDefault : %p\n", $t6
+
+$$ --- Section 6: summary --------------------------------------------------
+.printf "\n=========================================================\n"
+.if (($t5 == $t2) and ($t6 == $t2))
+{
+	.printf " [+] SUCCESS: all present privileges are now ENABLED\n"
+	.printf "     and ENABLED-BY-DEFAULT for PID %d\n", poi($t0 + @@(#FIELD_OFFSET(nt!_EPROCESS, UniqueProcessId)))
+}
+.else
+{
+	.printf " [-] Something did not match - verify manually\n"
+}
+.printf "=========================================================\n\n"
+
+$$ --- Section 7: full structure dump for verification --------------------
+dt nt!_SEP_TOKEN_PRIVILEGES ($t1 + @@(#FIELD_OFFSET(nt!_TOKEN, Privileges)))
