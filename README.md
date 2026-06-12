@@ -1,18 +1,21 @@
-# 🕵️‍♂️ Hello WinDbg Scripting
-
-This repository serves as a starting point for scripting in WinDbg, covering WinDbg native scripting, JavaScript, and PyKD (Python).
+# ***🕵️‍♂️ Hello WinDbg Scripting***
 
 <p align="center">
 	<img src="Images/Logos/Logo_WinDbg_Scripting.png">
 </p>
 
+<p align="center">
+	<i>
+		This repository serves as a starting point for scripting in WinDbg, covering WinDbg native scripting, JavaScript, and PyKD (Python).
+	</i>
+</p>
 
 ---
 ---
 ---
 
 
-## 📑 Table of Contents
+## ***📑 Table of Contents***
 
 * [What You'll Find Here](#what-youll-find-here)
 * [WinDbg Commands Reference](#windbg-commands-reference)
@@ -26,13 +29,14 @@ This repository serves as a starting point for scripting in WinDbg, covering Win
 
 <div id='what-youll-find-here'/>
 
-## 📋 What You'll Find Here
+## ***📋 What You'll Find Here***
+
 - **Basic Hello World scripts** for getting started with WinDbg scripting.
 - **WinDbg Native Scripting** examples to automate debugging tasks.
 - **JavaScript and Python (pykd)** samples for extending WinDbg capabilities.
 - **Complete pykd package** including DLLs and required files to ensure it functions correctly.
 - **A copy of the official WinDbg documentation** for quick reference.
--  **A collection of essential WinDbg commands** to navigate and operate efficiently.
+- **A collection of essential WinDbg commands** to navigate and operate efficiently.
 - **Links to additional Windows Kernel debugging resources** for deeper exploration.
 
 
@@ -43,7 +47,7 @@ This repository serves as a starting point for scripting in WinDbg, covering Win
 
 <div id='windbg-commands-reference'/>
 
-## 📜 WinDbg Commands Reference  
+## ***📜 WinDbg Commands Reference***
 
 A categorized list of essential WinDbg commands for debugging, reverse engineering, and malware analysis.
 
@@ -337,14 +341,16 @@ detailed documentation on a command.
 
 <div id='more-windbg-commands-and-information'/>
 
-## 🔍 More WinDbg Commands & Information
+## ***🔍 More WinDbg Commands & Information***
 
-If you have any doubts about a specific command, make sure to read the official documentation on the [WinDbg debugger](https://learn.microsoft.com/en-us/windows-hardware/drivers/debugger/) and [WinDbg debugger commands](https://learn.microsoft.com/en-us/windows-hardware/drivers/debuggercmds/)**.  
+If you have any doubts about a specific command, make sure to read the official documentation on the [WinDbg debugger](https://learn.microsoft.com/en-us/windows-hardware/drivers/debugger/) and [WinDbg debugger commands](https://learn.microsoft.com/en-us/windows-hardware/drivers/debuggercmds/).  
 
 A local copy of the official WinDbg documentation is also available in this repository under the WinDbgDocumentation folder.  
 
 📌 [WinDbg Documentation](https://github.com/TheMalwareGuardian/WinDbg_Scripting/tree/main/WinDbgDocumentation/)
 
-Additionally, you can find more information, debugging techniques, and practical examples in the following repository:  
+Additionally, you can find more information, debugging techniques, and practical examples in the following repositories:  
 
 📌 [TheMalwareGuardian: Awesome Bootkits & Rootkits Development - Debugging Section](https://github.com/TheMalwareGuardian/Awesome-Bootkits-Rootkits-Development?tab=readme-ov-file#debugging)
+
+📌 [TheMalwareGuardian: Kernel Debugging Playbook](https://github.com/TheMalwareGuardian/Kernel-Debugging-Playbook)
